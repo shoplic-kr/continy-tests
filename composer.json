@@ -1,0 +1,48 @@
+{
+  "name": "shoplic-kr/wp-tests",
+  "description": "Re-usable WordPress unit test library setup",
+  "homepage": "https://github.com/shoplic-kr/wp-tests",
+  "type": "library",
+  "autoload": {},
+  "autoload-dev": {},
+  "authors": [
+    {
+      "name": "changwoo",
+      "email": "changwoo@shoplic.kr"
+    }
+  ],
+  "require": {
+    "php": ">=8.0"
+  },
+  "require-dev": {
+  },
+  "scripts": {
+    "wp-tests:clean": [
+      "@wp-tests:setenv",
+      "rm -rf $WP_CORE_DIR $PWP_TESTS_DIR"
+    ],
+    "wp-tests:setenv": [
+      "@putenv WP_CORE_DIR=./tests/wp-test-core",
+      "@putenv WP_TESTS_DIR=./tests/wp-test-lib",
+      "@putenv WP_TESTS_PHPUNIT_POLYFILLS_PATH=./vendor/yoast/phpunit-polyfills",
+      "@putenv DB_HOST=localhost",
+      "@putenv DB_USER=wordpress_tests",
+      "@putenv DB_PASS=wordpress_tests",
+      "@putenv DB_NAME=wordpress_tests"
+    ],
+    "wp-tests:setup": [
+      "@wp-tests:setenv",
+      "@wp-tests:clean",
+      "bin/install-wp-tests.sh $DB_NAME $DB_USER $DB_PASS $DB_HOST latest"
+    ],
+    "wp-tests": [
+      "@wp-tests:setenv",
+      "vendor/bin/phpunit"
+    ]
+  },
+  "bin": [
+    "bin/wp-tests"
+  ],
+  "minimum-stability": "stable",
+  "version": "1.0.0"
+}
