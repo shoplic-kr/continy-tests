@@ -19,7 +19,11 @@
   "scripts": {
     "wp-tests:clean": [
       "@wp-tests:setenv",
-      "rm -rf $WP_CORE_DIR $PWP_TESTS_DIR"
+      "rm -rf $WP_CORE_DIR $WP_TESTS_DIR"
+    ],
+    "wp-tests:env": [
+      "@wp-tests:setenv",
+      "vendor/bin/wp-tests -d"
     ],
     "wp-tests:setenv": [
       "@putenv WP_CORE_DIR=./tests/wp-test-core",
@@ -44,6 +48,6 @@
     "bin/wp-tests"
   ],
   "minimum-stability": "stable",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "GPL-2.0-or-later"
 }

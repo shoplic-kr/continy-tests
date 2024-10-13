@@ -9,7 +9,7 @@ function main(): int
     }
 
     $args = getopt(
-        'c::i',
+        'c::id',
         [
             'host::',
             'user::',
@@ -33,6 +33,10 @@ function main(): int
 
     if (isset($args['i'])) {
         create_environment($host, $user, $pass, $db);
+    }
+
+    if (isset($args['d'])) {
+        dump_environment();
     }
 
     return 0;
@@ -121,10 +125,10 @@ function create_environment(string $host, string $user, string $password, string
     if (!file_exists($dst_dir . '/tests')) {
         mkdir($dst_dir . '/tests', 0755);
     }
-    if (!file_exists($dst_dir . '/tests/wp-tests/bootstrap.php')) {
+    if (!file_exists($dst_dir . '/tests/bootstrap.php')) {
         copy($src_dir . '/tests/bootstrap.php', $dst_dir . '/tests/bootstrap.php');
     }
-    if(!file_exists($dst_dir . '/tests/wp-tests/TestSample.php')) {
+    if (!file_exists($dst_dir . '/tests/TestSample.php')) {
         copy($src_dir . '/tests/TestSample.php', $dst_dir . '/tests/TestSample.php');
     }
 
@@ -138,6 +142,22 @@ function create_environment(string $host, string $user, string $password, string
      ************************/
     exec("composer require --dev phpunit/phpunit:^9");
     exec("composer require --dev yoast/phpunit-polyfills");
+}
+
+function dump_environment(): void
+{
+    _dump_env('WP_CORE_DIR');
+    _dump_env('WP_TESTS_DIR');
+    _dump_env('WP_TESTS_PHPUNIT_POLYFILLS_PATH');
+    _dump_env('DB_HOST');
+    _dump_env('DB_USER');
+    _dump_env('DB_PASS');
+    _dump_env('DB_NAME');
+}
+
+function _dump_env(string $name): void
+{
+    printf("%s=%s\n", $name, getenv($name));
 }
 
 function help(): void
